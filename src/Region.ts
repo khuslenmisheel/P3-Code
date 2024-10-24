@@ -258,7 +258,7 @@ export class Region {
         if (this.loaded && !this.loadError && this.image) {
                
             // **** YOUR CODE HERE ****
-            ctx.drawImage(this.image, 0, 0, this.w, this.h);
+            ctx.drawImage(this.image, 0,0);
         }
         
         //draw a frame indicating the (input) bounding box if requested

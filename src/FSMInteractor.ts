@@ -139,6 +139,12 @@ export class FSMInteractor {
         if (!this.fsm) return;
 
         // **** YOUR CODE HERE ****
+        for (const reg of this.fsm.regions){
+            ctx.save();
+            ctx.translate(reg.x, reg.y);
+            reg.draw(ctx, true);
+            ctx.restore();
+        }
     }   
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
