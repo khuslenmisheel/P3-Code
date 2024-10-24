@@ -22,13 +22,13 @@ import { Err } from "./Err.js";
 // Class for an interactive object controlled by a finite state machine (FSM).
 // Objects of this class have a position on the screen (the location of their top-left
 // corner within the HTML canvas object associated with thier parent (Root) object), 
-// Along with an FSM object which specifies, and partially imlements, their behavior.
+// Along with an FSM object which specifies, and partially implements, their behavior.
 // This class is repsonsible for using the FSM object to draw all the current region 
 // images within the FSM, and for dispatching events to the FSM to drive its behavior.
 // Note that this object has a position, but not an explicit size, and that no clipping
 // of its output is being done.  Regions within the FSM are positioned in the coordinate
 // system of this object (i.e., WRT its top-left corner), and have a size that 
-// establishes a bouding box for input purposes (i.e., indicateing which event positions 
+// establishes a bounding box for input purposes (i.e., indicateing which event positions 
 // are considered "inside" or "over" the region for input purposes).  However, region 
 // image displays are not not limited to that bounding box and are not clipped (except 
 // by the containing HTML canvas object).  See the FSM and Root classes for more details.
@@ -58,6 +58,10 @@ export class FSMInteractor {
     public set x(v : number) {
           
         // **** YOUR CODE HERE ****
+        if (!(v === this._x)){
+            this._x = v;
+            this.damage();
+        }
     }
 
     // Y position (top) of this object within the parent Root object (and containing 
@@ -67,6 +71,10 @@ export class FSMInteractor {
     public set y(v : number) {
             
         // **** YOUR CODE HERE ****
+        if (!(v === this._y)){
+            this._y = v;
+            this.damage();
+        }
     }
 
     // Position treated as a single value
@@ -91,6 +99,10 @@ export class FSMInteractor {
     public set parent(v : Root | undefined) {
             
         // **** YOUR CODE HERE ****
+        if (!(v === this._parent)){
+            this._parent = v;
+            this.damage();
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
@@ -111,6 +123,9 @@ export class FSMInteractor {
     public damage() {
            
         // **** YOUR CODE HERE ****
+        if(this.parent){
+            this.parent.damage();
+        }
     }
     
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

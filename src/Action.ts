@@ -84,6 +84,11 @@ export class Action {
         if (this._actType === 'none') return;
         
         // **** YOUR CODE HERE ****
+        if (this._actType === 'print') {
+            console.log(this._param);
+        } else if (this._actType === 'print_event') {
+            console.log(this._param, evtType, evtReg?.name);
+        }
     }
 
      //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -93,6 +98,12 @@ export class Action {
     public bindRegion(regionList : readonly Region[]) : void {
             
         // **** YOUR CODE HERE ****
+        for (const region of regionList) {
+            if (region.name === this._onRegionName) {
+                this._onRegion = region;
+                return;
+            }
+        }
         
         // ok to have no matching region for some actions
         if (this.actType === 'none' || this.actType === 'print' || 

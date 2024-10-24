@@ -85,6 +85,13 @@ export class EventSpec {
         }
      
         // **** YOUR CODE HERE ****
+        for (let region of regionList) {
+            if (region.name === this._regionName) {
+                this._region = region;
+                return;
+            }
+        }
+        this._region = undefined;
 
         // we didn't match any region, that's ok for some forms that don't need a region
         if (this.evtType === 'nevermatch') return;
@@ -104,8 +111,11 @@ export class EventSpec {
     public match(evtType : EventType, regn? : Region) : boolean {
           
         // **** YOUR CODE HERE ****
-
-        // **** Remove this: just here to get it to compile... ****
+        if (evtType === this.evtType){
+            if ((this._region === undefined && this.regionName === "*") || (regn === this.region)){
+                return true;
+            }
+        }
         return false;
     }
     

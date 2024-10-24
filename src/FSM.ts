@@ -20,13 +20,13 @@ import { Action } from "./Action.js";
 // * States each have state name and a list of transitions out of the state.  The start
 //   state for the FSM will always be the first state given in the state list. See the 
 //   State class for additional details.  
-//   - Transistions out of a state contaions three components: an EventSpec object which
+//   - Transitions out of a state contains three components: an EventSpec object which
 //     describes what events will cause the event to be "taken" (or "fire"), a target 
 //     state that the transition will take the machine to, and a list of actions to be 
 //     executed when the transition is taken.  See the Transition class for additional 
 //     detials.
 //     * Actions describe one of a series of things that the transition can cause to 
-//       happen when he transition is taken.  These include the ability to change or 
+//       happen when the transition is taken.  These include the ability to change or 
 //       clear the image in a region of the FMS, and an ability to print debugging 
 //       messages.  See the Action class for more details
 //
@@ -167,6 +167,9 @@ export class FSM {
     public damage() : void {
             
         // **** YOUR CODE HERE ****
+        if(this.parent){
+            this.parent.damage();
+        }
 
     }
 
@@ -200,6 +203,7 @@ export class FSM {
     public reset() {
             
         // **** YOUR CODE HERE ****
+        this._currentState = this._startState;
     }
     
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
