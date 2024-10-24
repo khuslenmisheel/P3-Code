@@ -185,14 +185,27 @@ export class FSM {
         // walk over all the transitions in all the states to get those bound
             
         // **** YOUR CODE HERE ****
+        for (let state of this.states) {
+            for (let trans of state.transitions){
+                trans.bindTarget(this.states);
+                for (let i : number = 0; i < trans.actions.length; i++){
+                    let act = trans.actions[i];
+                    act.bindRegion(this.regions);
+                }
+            }
+        }
 
         // start state is the first one
             
         // **** YOUR CODE HERE ****
+        this._startState = this.states[0];
 
         // need to link all regions back to this object as their parent
             
         // **** YOUR CODE HERE ****
+        for (let reg of this.regions) {
+            reg.parent = this;
+        }
 
     }
     
@@ -219,6 +232,7 @@ export class FSM {
         if (!this.currentState) return;
            
         // **** YOUR CODE HERE ****
+        
 
     }
       

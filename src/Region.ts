@@ -173,6 +173,7 @@ export class Region {
             
         // **** YOUR CODE HERE ****
         if(!(v === this._parent)){
+            this.damage();
             this._parent = v;
             this.damage();
         }

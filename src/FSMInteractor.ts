@@ -164,6 +164,13 @@ export class FSMInteractor {
         if (!this.fsm) return pickList;
            
         // **** YOUR CODE HERE ****
+        for (const reg of this.fsm.regions){
+            const withinX = localX >= reg.x && localX <= reg.x + reg.w;
+            const withinY = localY >= reg.y && localY <= reg.y + reg.h;
+            if (withinX && withinY) {
+                pickList.unshift(reg)
+            }
+        }
 
         return pickList;
     }
