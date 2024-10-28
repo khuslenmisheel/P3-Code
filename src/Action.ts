@@ -86,9 +86,17 @@ export class Action {
         // **** YOUR CODE HERE ****
         if (this._actType === 'print') {
             console.log(this._param);
-        } else if (this._actType === 'print_event') {
-            console.log(this._param, evtType, evtReg?.name);
         }
+        else if (this._actType === 'print_event') {
+            console.log(this._param, evtType, evtReg?.debugString());
+        }
+        else if (this._actType === 'set_image' && this.onRegion) {
+            this.onRegion.imageLoc = this.param;
+        }
+        else if (this._actType === 'clear_image' && this.onRegion){
+            this.onRegion.imageLoc = "";
+        }
+        
     }
 
      //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

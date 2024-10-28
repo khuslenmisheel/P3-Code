@@ -188,6 +188,7 @@ export class FSM {
         for (let state of this.states) {
             for (let trans of state.transitions){
                 trans.bindTarget(this.states);
+                trans.onEvent.bindRegion(this._regions);
                 for (let i : number = 0; i < trans.actions.length; i++){
                     let act = trans.actions[i];
                     act.bindRegion(this.regions);
@@ -232,7 +233,16 @@ export class FSM {
         if (!this.currentState) return;
            
         // **** YOUR CODE HERE ****
-        
+        for (let trans of this.currentState.transitions){
+            if(trans.match(evtType, reg)){
+                for (let act of trans.actions){
+                    act.execute(evtType, reg);
+                }
+
+                this._currentState = trans.target;
+                return;
+            }
+        }
 
     }
       

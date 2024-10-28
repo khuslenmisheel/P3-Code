@@ -111,10 +111,16 @@ export class EventSpec {
     public match(evtType : EventType, regn? : Region) : boolean {
           
         // **** YOUR CODE HERE ****
+        if (this.evtType === 'any') {
+            return true;
+        }
         if (evtType === this.evtType){
             if ((this._region === undefined && this.regionName === "*") || (regn === this.region)){
                 return true;
             }
+        }
+        if (this.evtType === 'nevermatch') {
+            return false;
         }
         return false;
     }

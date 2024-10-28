@@ -165,9 +165,7 @@ export class FSMInteractor {
            
         // **** YOUR CODE HERE ****
         for (const reg of this.fsm.regions){
-            const withinX = localX >= reg.x && localX <= reg.x + reg.w;
-            const withinY = localY >= reg.y && localY <= reg.y + reg.h;
-            if (withinX && withinY) {
+            if (reg.pick(localX, localY)) {
                 pickList.unshift(reg)
             }
         }
@@ -179,6 +177,7 @@ export class FSMInteractor {
 
         
         // **** YOUR CODE HERE ****   
+        public prevList: Region[] = [];
         // You will need some persistent bookkeeping for dispatchRawEvent()
 
     // Dispatch the given "raw" event by translating it into a series of higher-level
@@ -205,6 +204,39 @@ export class FSMInteractor {
         if (this.fsm === undefined) return;
 
         // **** YOUR CODE HERE ****
+        const curList = this.pick(localX, localY);
+
+        const exitRegions = this.prevList.filter(reg => !curList.includes(reg));
+        const enterRegions = curList.filter(reg => !this.prevList.includes(reg));
+
+        for (const region of exitRegions) {
+            this.fsm.actOnEvent('exit', region);
+        }
+
+        for (const region of enterRegions) {
+            this.fsm.actOnEvent('enter', region);
+        }
+
+        if (what === 'press') {
+            for (const region of curList) {
+                this.fsm.actOnEvent('press', region);
+            }
+        } else if (what === 'move') {
+            for (const region of curList) {
+                this.fsm.actOnEvent('move_inside', region);
+            }
+        } else if (what === 'release') {
+            if (curList.length > 0) {
+                for (const region of curList) {
+                    this.fsm.actOnEvent('release', region);
+                }
+            } else {
+                this.fsm.actOnEvent('release_none');
+            }
+        }
+
+        this.prevList = curList;
+
     }
 
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
