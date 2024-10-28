@@ -48,18 +48,34 @@ export class Region {
     get x() { return this._x; }
     set x(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._x)) {
+            this._x = v;
+            this.damage();
+        }
     }
     get y() { return this._y; }
     set y(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._y)) {
+            this._y = v;
+            this.damage();
+        }
     }
     get w() { return this._w; }
     set w(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._w)) {
+            this._w = v;
+            this.damage();
+        }
     }
     get h() { return this._h; }
     set h(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._h)) {
+            this._h = v;
+            this.damage();
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
     // Size of this object considered as one value
@@ -77,6 +93,11 @@ export class Region {
     get parent() { return this._parent; }
     set parent(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._parent)) {
+            this.damage();
+            this._parent = v;
+            this.damage();
+        }
     }
     get imageLoc() { return this._imageLoc; }
     set imageLoc(v) {
@@ -104,8 +125,9 @@ export class Region {
     // coordinates of this object) should be considered "inside" or "over" this region.
     pick(localX, localY) {
         // **** YOUR CODE HERE ****
-        // **** Remove this, it's just here to make this compile as-is
-        return false;
+        const withinX = localX >= this._x && localX <= this._x + this._w;
+        const withinY = localY >= this._y && localY <= this._y + this._h;
+        return withinX && withinY;
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Draw the image for this region using the givn drawing context.  The context 
@@ -118,6 +140,7 @@ export class Region {
         // if we have a valid loaded image, draw it
         if (this.loaded && !this.loadError && this.image) {
             // **** YOUR CODE HERE ****
+            ctx.drawImage(this.image, 0, 0);
         }
         //draw a frame indicating the (input) bounding box if requested
         if (showDebugFrame) {
@@ -133,6 +156,9 @@ export class Region {
     // notification to its parent FSM which eventually results in a redraw.
     damage() {
         // **** YOUR CODE HERE ****
+        if (this.parent) {
+            this.parent.damage();
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Asynchronous method to start loading of the image for this region.  This 

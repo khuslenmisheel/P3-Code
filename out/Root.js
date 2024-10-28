@@ -1,5 +1,5 @@
 //===================================================================
-// Class for a root object which manages the connection with with the underlying 
+// Class for a root object which manages the connection with the underlying 
 // HTML canvas and performs other global tasks (like invoking redraws) for the system.
 // This object maintains a list of child (FSMInteractor) objects which it collects
 // damage notifications from, arranges to be drawn, and dispatches input to.
@@ -57,7 +57,7 @@ export class Root {
     //-------------------------------------------------------------------
     // Perform of redraw across all our child object using the previously established
     // drawing context object for the HTML canvas object we are associated with.
-    // This begins work by clearing the entire canvas.  The for each child object this 
+    // This begins work by clearing the entire canvas.  Then for each child object this 
     // saves the state of the drawing context, puts it in the child coordinate system,
     // draws the child, and then restors the context.
     _redraw() {
@@ -65,6 +65,13 @@ export class Root {
         this._batchingDamage = true;
         try {
             // **** YOUR CODE HERE ****
+            this.canvasContext.clearRect(0, 0, this.owningCanvas.width, this.owningCanvas.height);
+            for (const child of this.children) {
+                this.canvasContext.save();
+                this.canvasContext.translate(child.x, child.y);
+                child.draw(this.canvasContext);
+                this.canvasContext.restore();
+            }
             // currently, for ease of debugging, we let exceptions propogate out from this 
             // redraw (and typically all the out of our code).  this will basically shut 
             // down the whole system and preclude further action.  if recovery from 

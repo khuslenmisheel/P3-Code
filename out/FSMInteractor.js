@@ -27,19 +27,22 @@ import { Err } from "./Err.js";
 // Class for an interactive object controlled by a finite state machine (FSM).
 // Objects of this class have a position on the screen (the location of their top-left
 // corner within the HTML canvas object associated with thier parent (Root) object), 
-// Along with an FSM object which specifies, and partially imlements, their behavior.
+// Along with an FSM object which specifies, and partially implements, their behavior.
 // This class is repsonsible for using the FSM object to draw all the current region 
 // images within the FSM, and for dispatching events to the FSM to drive its behavior.
 // Note that this object has a position, but not an explicit size, and that no clipping
 // of its output is being done.  Regions within the FSM are positioned in the coordinate
 // system of this object (i.e., WRT its top-left corner), and have a size that 
-// establishes a bouding box for input purposes (i.e., indicateing which event positions 
+// establishes a bounding box for input purposes (i.e., indicateing which event positions 
 // are considered "inside" or "over" the region for input purposes).  However, region 
 // image displays are not not limited to that bounding box and are not clipped (except 
 // by the containing HTML canvas object).  See the FSM and Root classes for more details.
 //=================================================================== 
 export class FSMInteractor {
     constructor(fsm = undefined, x = 0, y = 0, parent) {
+        //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        // **** YOUR CODE HERE ****   
+        this.prevList = [];
         this._fsm = fsm;
         this._x = x;
         this._y = y;
@@ -50,10 +53,18 @@ export class FSMInteractor {
     get x() { return this._x; }
     set x(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._x)) {
+            this._x = v;
+            this.damage();
+        }
     }
     get y() { return this._y; }
     set y(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._y)) {
+            this._y = v;
+            this.damage();
+        }
     }
     // Position treated as a single value
     get position() {
@@ -70,6 +81,10 @@ export class FSMInteractor {
     get parent() { return this._parent; }
     set parent(v) {
         // **** YOUR CODE HERE ****
+        if (!(v === this._parent)) {
+            this._parent = v;
+            this.damage();
+        }
     }
     get fsm() { return this._fsm; }
     //-------------------------------------------------------------------
@@ -83,6 +98,9 @@ export class FSMInteractor {
     // object which coordinates eventual redraw by calling this object's draw() method.
     damage() {
         // **** YOUR CODE HERE ****
+        if (this.parent) {
+            this.parent.damage();
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Draw the display for this object using the given drawing context object.  If the
@@ -94,6 +112,12 @@ export class FSMInteractor {
         if (!this.fsm)
             return;
         // **** YOUR CODE HERE ****
+        for (const reg of this.fsm.regions) {
+            ctx.save();
+            ctx.translate(reg.x, reg.y);
+            reg.draw(ctx, true);
+            ctx.restore();
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Perform a "pick" operation, to determine the list of regions in our controlling
@@ -110,10 +134,13 @@ export class FSMInteractor {
         if (!this.fsm)
             return pickList;
         // **** YOUR CODE HERE ****
+        for (const reg of this.fsm.regions) {
+            if (reg.pick(localX, localY)) {
+                pickList.unshift(reg);
+            }
+        }
         return pickList;
     }
-    //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-    // **** YOUR CODE HERE ****   
     // You will need some persistent bookkeeping for dispatchRawEvent()
     // Dispatch the given "raw" event by translating it into a series of higher-level
     // events which are formulated in terms of the regions of our FSM.  "Raw" events 
@@ -137,6 +164,36 @@ export class FSMInteractor {
         if (this.fsm === undefined)
             return;
         // **** YOUR CODE HERE ****
+        const curList = this.pick(localX, localY);
+        const exitRegions = this.prevList.filter(reg => !curList.includes(reg));
+        const enterRegions = curList.filter(reg => !this.prevList.includes(reg));
+        for (const region of exitRegions) {
+            this.fsm.actOnEvent('exit', region);
+        }
+        for (const region of enterRegions) {
+            this.fsm.actOnEvent('enter', region);
+        }
+        if (what === 'press') {
+            for (const region of curList) {
+                this.fsm.actOnEvent('press', region);
+            }
+        }
+        else if (what === 'move') {
+            for (const region of curList) {
+                this.fsm.actOnEvent('move_inside', region);
+            }
+        }
+        else if (what === 'release') {
+            if (curList.length > 0) {
+                for (const region of curList) {
+                    this.fsm.actOnEvent('release', region);
+                }
+            }
+            else {
+                this.fsm.actOnEvent('release_none');
+            }
+        }
+        this.prevList = curList;
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Method to begin an asychnous load of a FSM_json object from a remotely loaded 

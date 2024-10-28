@@ -89,6 +89,9 @@ export class FSM {
     // 
     damage() {
         // **** YOUR CODE HERE ****
+        if (this.parent) {
+            this.parent.damage();
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
     // Do connecting and other bookkeeping to initially set up and connect the 
@@ -100,16 +103,31 @@ export class FSM {
         // state, region names in event specs, and region names in actions.
         // walk over all the transitions in all the states to get those bound
         // **** YOUR CODE HERE ****
+        for (let state of this.states) {
+            for (let trans of state.transitions) {
+                trans.bindTarget(this.states);
+                trans.onEvent.bindRegion(this._regions);
+                for (let i = 0; i < trans.actions.length; i++) {
+                    let act = trans.actions[i];
+                    act.bindRegion(this.regions);
+                }
+            }
+        }
         // start state is the first one
         // **** YOUR CODE HERE ****
+        this._startState = this.states[0];
         // need to link all regions back to this object as their parent
         // **** YOUR CODE HERE ****
+        for (let reg of this.regions) {
+            reg.parent = this;
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Reset the FSM to be in its start state.  Note: this does not reset
     // region images to their original states.
     reset() {
         // **** YOUR CODE HERE ****
+        this._currentState = this._startState;
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
     // Cause the FSM to act on the given event: represented by an event type (see 
@@ -123,6 +141,15 @@ export class FSM {
         if (!this.currentState)
             return;
         // **** YOUR CODE HERE ****
+        for (let trans of this.currentState.transitions) {
+            if (trans.match(evtType, reg)) {
+                for (let act of trans.actions) {
+                    act.execute(evtType, reg);
+                }
+                this._currentState = trans.target;
+                return;
+            }
+        }
     }
     //-------------------------------------------------------------------
     // Debugging Support

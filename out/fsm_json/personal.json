@@ -1,0 +1,158 @@
+{
+    "regions": [
+        { "name": "idling", "x": 0, "y": 0, "imageLoc": "./images/Idle.png"},
+        { "name": "idle_img", "x": 0, "y": 0, "w": 400, "h": 400 },
+        { "name": "button1", "x": 250, "y": 305, "w": 50, "h": 50 },
+        { "name": "button2", "x": 200, "y": 320, "w": 35, "h": 21 },
+        { "name": "button3", "x": 300, "y": 305, "w": 50, "h": 50 },
+        { "name": "button4", "x": 100, "y": 300, "w": 25, "h": 25 },
+        { "name": "button5", "x": 50, "y": 300, "w": 25, "h": 25 }
+    ],
+    "states": [
+        {
+            "name": "inactive",
+            "transitions": [
+            {
+                "onEvent": { "evtType": "press", "region": "button1" },
+                "target": "active_1",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Kamehameha.png" },
+                    { "act": "print", "param": "Display Kamehameha" }
+                ]
+            },
+            {
+                "onEvent": { "evtType": "press", "region": "button2" },
+                "target": "active_2",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Pause.png" },
+                    { "act": "print", "param": "Display Pause" }
+                ]
+            },
+
+            {
+                "onEvent": { "evtType": "press", "region": "button3" },
+                "target": "active_3",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Charge.png" },
+                    { "act": "print", "param": "Display Charge" }
+                ]
+            },
+
+            {
+                "onEvent": { "evtType": "press", "region": "button4" },
+                "target": "active_4",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Forward.png" },
+                    { "act": "print", "param": "Going Forward" }
+                ]
+            },
+
+            {
+                "onEvent": { "evtType": "press", "region": "button5" },
+                "target": "active_5",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Backward.png" },
+                    { "act": "print", "param": "Going Backward" }
+                ]
+            }
+            ]
+        },
+        {
+            "name": "active_1",
+            "transitions": [
+                {
+                "onEvent": { "evtType": "release", "region": "button1" },
+                "target": "inactive",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                    { "act": "print", "param": "Inactive" }
+                ]
+                },
+                {
+                    "onEvent": { "evtType": "exit", "region": "button1" },
+                    "target": "inactive",
+                    "actions": [
+                        { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                        { "act": "print", "param": "Inactive" }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "active_2",
+            "transitions": [
+                {
+                "onEvent": { "evtType": "press", "region": "button2" },
+                "target": "inactive",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                    { "act": "print", "param": "Inactive" }
+                ]
+                }
+            ]
+        },
+        {
+            "name": "active_3",
+            "transitions": [
+                {
+                "onEvent": { "evtType": "release", "region": "button3" },
+                "target": "inactive",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                    { "act": "print", "param": "Inactive" }
+                ]
+                },
+                {
+                    "onEvent": { "evtType": "exit", "region": "button3" },
+                    "target": "inactive",
+                    "actions": [
+                        { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                        { "act": "print", "param": "Inactive" }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "active_4",
+            "transitions": [
+                {
+                "onEvent": { "evtType": "release", "region": "button4" },
+                "target": "inactive",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                    { "act": "print", "param": "Inactive" }
+                ]
+                },
+                {
+                    "onEvent": { "evtType": "exit", "region": "button4" },
+                    "target": "inactive",
+                    "actions": [
+                        { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                        { "act": "print", "param": "Inactive" }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "active_5",
+            "transitions": [
+                {
+                "onEvent": { "evtType": "release", "region": "button5" },
+                "target": "inactive",
+                "actions": [
+                    { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                    { "act": "print", "param": "Inactive" }
+                ]
+                },
+                {
+                    "onEvent": { "evtType": "exit", "region": "button5" },
+                    "target": "inactive",
+                    "actions": [
+                        { "act": "set_image", "region": "idle_img", "param": "./images/Idle.png" },
+                        { "act": "print", "param": "Inactive" }
+                    ]
+                }
+            ]
+        }
+        ]
+    }

@@ -32,12 +32,30 @@ export class Action {
         if (this._actType === 'none')
             return;
         // **** YOUR CODE HERE ****
+        if (this._actType === 'print') {
+            console.log(this._param);
+        }
+        else if (this._actType === 'print_event') {
+            console.log(this._param, evtType, evtReg === null || evtReg === void 0 ? void 0 : evtReg.debugString());
+        }
+        else if (this._actType === 'set_image' && this.onRegion) {
+            this.onRegion.imageLoc = this.param;
+        }
+        else if (this._actType === 'clear_image' && this.onRegion) {
+            this.onRegion.imageLoc = "";
+        }
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     // Attempt to find the name listed for this region in the given list of regions
     // (from the whole FSM), assiging the Region object to this._onRegion if found.
     bindRegion(regionList) {
         // **** YOUR CODE HERE ****
+        for (const region of regionList) {
+            if (region.name === this._onRegionName) {
+                this._onRegion = region;
+                return;
+            }
+        }
         // ok to have no matching region for some actions
         if (this.actType === 'none' || this.actType === 'print' ||
             this.actType === 'print_event') {
