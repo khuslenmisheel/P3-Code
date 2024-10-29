@@ -32,16 +32,20 @@ export class Action {
         if (this._actType === 'none')
             return;
         // **** YOUR CODE HERE ****
+        //Print parameter if action is print
         if (this._actType === 'print') {
             console.log(this._param);
         }
         else if (this._actType === 'print_event') {
+            //Print parameter and extra details if action is print
             console.log(this._param, evtType, evtReg === null || evtReg === void 0 ? void 0 : evtReg.debugString());
         }
         else if (this._actType === 'set_image' && this.onRegion) {
+            //Set image location to parameter if action type is set_image
             this.onRegion.imageLoc = this.param;
         }
         else if (this._actType === 'clear_image' && this.onRegion) {
+            //Set image location to none if action type is clear_image
             this.onRegion.imageLoc = "";
         }
     }
@@ -50,7 +54,9 @@ export class Action {
     // (from the whole FSM), assiging the Region object to this._onRegion if found.
     bindRegion(regionList) {
         // **** YOUR CODE HERE ****
+        //Go through all of the regions
         for (const region of regionList) {
+            //If names match assign Region object
             if (region.name === this._onRegionName) {
                 this._onRegion = region;
                 return;

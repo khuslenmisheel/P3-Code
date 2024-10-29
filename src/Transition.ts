@@ -89,6 +89,7 @@ export class Transition {
     // event types and their meaning).
     public match(evtType : EventType, regn? : Region) : boolean {
         // **** YOUR CODE HERE ****
+        //Check if event matches
         return this.onEvent.match(evtType, regn);
     }
     
@@ -100,6 +101,7 @@ export class Transition {
     // the FSM (in which case an error message will also be generted using Err.emit()).
     public bindTarget(stateList : readonly State[]) : void {
         // **** YOUR CODE HERE ****
+        //Bind target to state
         for (let state of stateList) {
             if (state.name === this._targetName) {
                 this._target = state;

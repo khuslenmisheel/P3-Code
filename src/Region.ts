@@ -93,6 +93,7 @@ export class Region {
     public set x(v : number) {
             
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if(!(v === this._x)){
             this._x = v;
             this.damage();
@@ -107,6 +108,7 @@ export class Region {
     public set y(v : number) {
             
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if(!(v === this._y)){
             this._y = v;
             this.damage();
@@ -122,6 +124,7 @@ export class Region {
     public set w(v : number) {
             
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if(!(v === this._w)){
             this._w = v;
             this.damage();
@@ -137,6 +140,7 @@ export class Region {
     public set h(v : number) {
             
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if(!(v === this._h)){
             this._h = v;
             this.damage();
@@ -172,6 +176,7 @@ export class Region {
     public set parent(v : FSM | undefined) {
             
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if(!(v === this._parent)){
             this.damage();
             this._parent = v;
@@ -240,6 +245,7 @@ export class Region {
     public pick(localX : number, localY : number) : boolean {
             
         // **** YOUR CODE HERE ****
+        //Check if localX and localY are in region
         const withinX = localX >= this._x && localX <= this._x + this._w;
         const withinY = localY >= this._y && localY <= this._y + this._h;
         return withinX && withinY;
@@ -259,6 +265,7 @@ export class Region {
         if (this.loaded && !this.loadError && this.image) {
                
             // **** YOUR CODE HERE ****
+            //Draw image
             ctx.drawImage(this.image, 0,0);
         }
         
@@ -278,6 +285,7 @@ export class Region {
     // notification to its parent FSM which eventually results in a redraw.
     public damage() {
         // **** YOUR CODE HERE ****
+        //Propagate damage up
         if(this.parent){
             this.parent.damage();
         }

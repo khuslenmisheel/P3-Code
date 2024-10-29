@@ -53,6 +53,7 @@ export class FSMInteractor {
     get x() { return this._x; }
     set x(v) {
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if (!(v === this._x)) {
             this._x = v;
             this.damage();
@@ -61,6 +62,7 @@ export class FSMInteractor {
     get y() { return this._y; }
     set y(v) {
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if (!(v === this._y)) {
             this._y = v;
             this.damage();
@@ -81,6 +83,7 @@ export class FSMInteractor {
     get parent() { return this._parent; }
     set parent(v) {
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if (!(v === this._parent)) {
             this._parent = v;
             this.damage();
@@ -98,6 +101,7 @@ export class FSMInteractor {
     // object which coordinates eventual redraw by calling this object's draw() method.
     damage() {
         // **** YOUR CODE HERE ****
+        //Check if value is same and damage for new value
         if (this.parent) {
             this.parent.damage();
         }
@@ -112,7 +116,9 @@ export class FSMInteractor {
         if (!this.fsm)
             return;
         // **** YOUR CODE HERE ****
+        //Loop through each region
         for (const reg of this.fsm.regions) {
+            //Save context, translate coordinates, draw the object and restore
             ctx.save();
             ctx.translate(reg.x, reg.y);
             reg.draw(ctx, true);
@@ -134,6 +140,7 @@ export class FSMInteractor {
         if (!this.fsm)
             return pickList;
         // **** YOUR CODE HERE ****
+        //Loop through regions and add the picked list in reverse order
         for (const reg of this.fsm.regions) {
             if (reg.pick(localX, localY)) {
                 pickList.unshift(reg);
@@ -164,15 +171,20 @@ export class FSMInteractor {
         if (this.fsm === undefined)
             return;
         // **** YOUR CODE HERE ****
+        //List of regions under pointer
         const curList = this.pick(localX, localY);
+        //Filter for points that have exited or entered regions 
         const exitRegions = this.prevList.filter(reg => !curList.includes(reg));
         const enterRegions = curList.filter(reg => !this.prevList.includes(reg));
+        //Dispatch exit events
         for (const region of exitRegions) {
             this.fsm.actOnEvent('exit', region);
         }
+        //Dispatch enter events
         for (const region of enterRegions) {
             this.fsm.actOnEvent('enter', region);
         }
+        //Depending on what type of raw event it is, dispatch it
         if (what === 'press') {
             for (const region of curList) {
                 this.fsm.actOnEvent('press', region);
@@ -193,6 +205,7 @@ export class FSMInteractor {
                 this.fsm.actOnEvent('release_none');
             }
         }
+        //Update the previous list of regions to the current list 
         this.prevList = curList;
     }
     //. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

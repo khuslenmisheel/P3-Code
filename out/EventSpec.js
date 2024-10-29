@@ -33,7 +33,9 @@ export class EventSpec {
             return;
         }
         // **** YOUR CODE HERE ****
+        //Go through regions
         for (let region of regionList) {
+            //If the region object matches then assign it
             if (region.name === this._regionName) {
                 this._region = region;
                 return;
@@ -56,14 +58,17 @@ export class EventSpec {
     // our region is undefined and region name is "*", we will match to any region.
     match(evtType, regn) {
         // **** YOUR CODE HERE ****
+        //If our event is any then we always return true
         if (this.evtType === 'any') {
             return true;
         }
+        //If our event matches the given event, then we check if our regions match
         if (evtType === this.evtType) {
             if ((this._region === undefined && this.regionName === "*") || (regn === this.region)) {
                 return true;
             }
         }
+        //If event is nevermatch we just always return false
         if (this.evtType === 'nevermatch') {
             return false;
         }

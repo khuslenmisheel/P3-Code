@@ -74,8 +74,11 @@ export class Root {
         try {
 
         // **** YOUR CODE HERE ****
+        //Clear canvas
         this.canvasContext.clearRect(0, 0, this.owningCanvas.width, this.owningCanvas.height);
+        //Loop through children
         for (const child of this.children) {
+            //Save context, translate coordinates, draw then restore
             this.canvasContext.save();
             this.canvasContext.translate(child.x, child.y);
             child.draw(this.canvasContext);
